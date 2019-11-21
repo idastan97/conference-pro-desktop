@@ -1,6 +1,6 @@
 import serial
 import queue
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import time
 import _thread
 PORT = "/dev/ttyACM0"
@@ -16,8 +16,10 @@ def add_point():
     x = data.get('x')
     y = data.get('y')
     print(x, y)
-    qu.put((int(x), int(y)))
-    return 'ok'
+    qu.put((float(x), float(y)))
+    resp = Response("ok")
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
 
 
 def send_command(ser, com):
